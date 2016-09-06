@@ -22,10 +22,11 @@ module Mlo
           }.freeze
 
           def init_with_program(prog)
-            prog.command(:liveserve) do |cmd|
-              cmd.syntax "liveserve [options]"
+            prog.command("browser-sync") do |cmd|
+              cmd.syntax "browser-sync [options]"
               cmd.description 'Serve a Jekyll site using Browsersync.'
-              cmd.alias :liveserver
+              cmd.alias :browsersync
+              cmd.alias :bs
 
               add_build_options(cmd)
 
