@@ -7,7 +7,7 @@ module Mlo
         class << self
           DEFAULT_BROWSERSYNC_PATH = 'node_modules/.bin/browser-sync'
           COMMAND_OPTIONS = {
-            "https"              => ["https", "Use HTTPS"],
+            "https"              => ["--https", "Use HTTPS"],
             "host"               => ["host", "-H", "--host [HOST]", "Host to bind to"],
             "open_url"           => ["-o", "--open-url", "Launch your site in a browser"],
             "port"               => ["-P", "--port [PORT]", "Port to listen on"],
