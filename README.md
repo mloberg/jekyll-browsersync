@@ -21,18 +21,23 @@ Then install it
 
 ## Usage
 
-Once you have it installed, you should have a new `browser-sync` command under Jekyll.
+Once you have it installed, you should have a new `browsersync` command under Jekyll.
 
-    $ bundle exec jekyll browser-sync
+    $ bundle exec jekyll browsersync
 
 If you have Browsersync installed in a custom location, you can specify this with the
 `--browser-sync` option.
 
-    $ bundle exec jekyll browsersync --browser-sync ~/bin/browser-sync
+    $ bundle exec jekyll browser-sync --browser-sync ~/bin/browser-sync
 
 If you would like to serve the site using https, use the `--https` option.
 
     $ bundle exec jekyll bs --https
+
+If you have any other options you would like passed to the Browsersync command,
+pass them as arguments.
+
+    $ bundle exec jekyll browsersync -- --no-notify
 
 ## Contributing
 

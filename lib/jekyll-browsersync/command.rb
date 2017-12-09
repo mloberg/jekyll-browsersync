@@ -22,10 +22,10 @@ module Mlo
           }.freeze
 
           def init_with_program(prog)
-            prog.command("browser-sync") do |cmd|
-              cmd.syntax "browser-sync [options]"
+            prog.command("browsersync") do |cmd|
+              cmd.syntax "browsersync [options]"
               cmd.description 'Serve a Jekyll site using Browsersync.'
-              cmd.alias :browsersync
+              cmd.alias :'browser-sync'
               cmd.alias :bs
 
               add_build_options(cmd)
@@ -34,7 +34,8 @@ module Mlo
                 cmd.option key, *val
               end
 
-              cmd.action do |_, opts|
+              cmd.action do |args, opts|
+                puts args.inspect
                 opts['serving'] = true
                 opts['watch'] = true unless opts.key?('watch')
                 opts['incremental'] = true unless opts.key?('incremental')
@@ -48,30 +49,27 @@ module Mlo
                 config = opts['config']
                 ::Jekyll::Commands::Build.process(opts)
                 opts['config'] = config
-                Command.process(opts)
+                Command.process(opts, args)
               end
             end
           end
 
-          def process(opts)
+          def process(opts, args)
             opts = configuration_from_options(opts)
             destination = opts['destination']
 
-            cmd = [
-              opts['browsersync'],
-              'start',
-              "--server #{destination}",
-              "--files #{destination}",
-              "--port #{opts['port']}",
-              "--host #{opts['host']}",
-              "--ui-port #{opts['ui_port']}",
-            ]
+            args << "--server #{destination}"
+            args << "--files #{destination}"
+            args << "--port #{opts['port']}"
+            args << "--host #{opts['host']}"
+            args << "--ui-port #{opts['ui_port']}"
+            args << '--https' if opts['https']
+            args << '--no-open' unless opts['open_url']
+            args << '--directory' if opts['show_dir_listing']
 
-            cmd << '--https' if opts['https']
-            cmd << '--no-open' unless opts['open_url']
-            cmd << '--directory' if opts['show_dir_listing']
+            cmd = "#{opts['browsersync']} start #{args.join(' ')}"
 
-            PTY.spawn(cmd.join(' ')) do |stdout, stdin, pid|
+            PTY.spawn(cmd) do |stdout, stdin, pid|
               trap("INT") { Process.kill 'INT', pid }
 
               ::Jekyll.logger.info "Server address:", server_address(opts)
