@@ -48,14 +48,7 @@ module Mlo
 
           ::Jekyll::Commands::Build.process(config)
 
-          PTY.spawn(cmd) do |stdout, stdin, pid|
-            trap("INT") { Process.kill "INT", pid }
-    
-            begin
-              stdout.each { |line| ::Jekyll.logger.info(line.rstrip) }
-            rescue
-            end
-          end
+          system(cmd)
         end
 
         private
