@@ -42,20 +42,13 @@ module Mlo
           args << "--no-open" unless config["open"]
           cmd = "#{cli} start #{args.join(" ")}"
 
-          if `#{cli} --version 2>/dev/null`.empty?
+          if `#{cli} --version`.empty?
             raise "Unable to locate browser-sync binary."
           end
 
           ::Jekyll::Commands::Build.process(config)
 
-          PTY.spawn(cmd) do |stdout, stdin, pid|
-            trap("INT") { Process.kill "INT", pid }
-    
-            begin
-              stdout.each { |line| ::Jekyll.logger.info(line.rstrip) }
-            rescue
-            end
-          end
+          system(cmd)
         end
 
         private
