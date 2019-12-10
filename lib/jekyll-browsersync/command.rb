@@ -42,7 +42,7 @@ module Mlo
           args << "--no-open" unless config["open"]
           cmd = "#{cli} start #{args.join(" ")}"
 
-          if `#{cli} --version 2>/dev/null`.empty?
+          if `#{cli} --version`.empty?
             raise "Unable to locate browser-sync binary."
           end
 
